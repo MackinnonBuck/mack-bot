@@ -1,0 +1,9 @@
+build_targets=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<build_targets xmlns\="com.github.rustdt.ide.core">\r\n<target auto_enabled\="false" config\="build" n_enabled\="true" version2\="true">\r\n<command_invocation append_env\="true" command_arguments\="${CARGO_TOOL_PATH} build">\r\n<env_vars/>\r\n</command_invocation>\r\n</target>\r\n<target auto_enabled\="true" config\="check" n_enabled\="false" version2\="true">\r\n<command_invocation append_env\="true" command_arguments\="${CARGO_TOOL_PATH} rustc -- -Zno-trans">\r\n<env_vars/>\r\n</command_invocation>\r\n</target>\r\n</build_targets>\r\n
+eclipse.preferences.version=1
+format_onSave=false
+racer_path=C\:\\Users\\t_buckm\\.cargo\\RustDT\\bin\\racer.exe
+rainicorn_path=C\:\\Users\\t_buckm\\.cargo\\RustDT\\bin\\parse_describe.exe
+rustfmt_path=C\:\\Users\\t_buckm\\.cargo\\RustDT\\bin\\rustfmt.exe
+sdk_path=C\:\\Users\\t_buckm\\.cargo
+sdk_src_path=C\:\\Users\\t_buckm\\rustc-1.10.0\\src
+toolchain_prefs.use_project_settings=false

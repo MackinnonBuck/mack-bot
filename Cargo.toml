@@ -1,0 +1,7 @@
+[package]
+name = "mack_bot"
+version = "0.1.0"
+authors = ["Mackinnon Buck <mackinnon.buck@autodesk.com>"]
+
+[dependencies]
+discord = "0.6.0"
