@@ -127,12 +127,12 @@ impl Connect4 {
 			
 			let check_enemy_valid = || {
 				if enemy == NONE {
-					let _ = discord.send_message(&message.channel_id, "Bro, who said we were playing a game?", "", false);
+					let _ = discord.send_message(message.channel_id, "Bro, who said we were playing a game?", "", false);
 					false
 				} else if *enemy == *message.author.name {
 					true
 				} else {
-					let _ = discord.send_message(&message.channel_id, &*format!("Hey, it's {} who's playing, not you.", enemy), "", false);
+					let _ = discord.send_message(message.channel_id, &*format!("Hey, it's {} who's playing, not you.", enemy), "", false);
 					false
 				}
 			};
@@ -142,13 +142,20 @@ impl Connect4 {
 					if enemy == NONE {
 						self.start_game(discord, connection, message);
 					} else {
-						let _ = discord.send_message(&message.channel_id,
+						let _ = discord.send_message(message.channel_id,
 							&*format!("Shut up, I'm already playing with {}!", enemy), "", false);
 					}
 				}
 				"!quit" => {
 					if check_enemy_valid() {
-						let _ = discord.send_message(&message.channel_id, "Wow. Sore loser.", "", false);
+						let _ = discord.send_message(message.channel_id, "Wow. Sore loser.", "", false);
+						self.quit_game(connection);
+					}
+				}
+				"!ragequit" => {
+					if check_enemy_valid() {
+						let _ = discord.send_message(message.channel_id, "(\u{256F}\u{00B0}\u{25A1}\u{00B0}\u{FF09}\u{256F}\u{FE35} \u{253B}\u{2501}\u{253B}", "", false);
+
 						self.quit_game(connection);
 					}
 				}
@@ -157,7 +164,7 @@ impl Connect4 {
 						if let Some(index) = splitter.next() {
 							self.take_turn(discord, connection, message, index);
 						} else {
-							let _ = discord.send_message(&message.channel_id, "Invalid command, index not specified.", "", false);
+							let _ = discord.send_message(message.channel_id, "Invalid command, index not specified.", "", false);
 						}
 					}
 				}
@@ -170,7 +177,7 @@ impl Connect4 {
 		connection.set_game(Option::Some(Game::playing("Connect4".to_string())));
 		
 		self.enemy = Option::Some(message.author.name.clone());
-		let _ = discord.send_message(&message.channel_id,
+		let _ = discord.send_message(message.channel_id,
 			&*format!("Starting Connect4 with {} (I'm '@' and you're '#').", message.author.name),
 			"", false);
 		
@@ -188,29 +195,29 @@ impl Connect4 {
 			Ok(val) => {
 				if val < WIDTH {
 					if self.place_enemy(discord, message, val) {
-						let _ = discord.delete_message(&message.channel_id, &message.id);
+						let _ = discord.delete_message(message.channel_id, message.id);
 						
 						if Connect4::check_winner(self.grid) == Option::Some('#') {
 							self.update_grid(discord, message);
-							let _ = discord.send_message(&message.channel_id,
+							let _ = discord.send_message(message.channel_id,
 								"Well, you won. But that's only because you cheated.", "", false);
 							self.quit_game(connection);
 						} else {
 							self.place_computer();
 							self.update_grid(discord, message);
 							if Connect4::check_winner(self.grid) == Option::Some('@') {
-								let _ = discord.send_message(&message.channel_id,
+								let _ = discord.send_message(message.channel_id,
 								"Ha! Loser. You really thought you could beat me?", "", false);
 								self.quit_game(connection);
 							}
 						}
 					}
 				} else {
-					let _ = discord.send_message(&message.channel_id, "Index is out of range.", "", false);
+					let _ = discord.send_message(message.channel_id, "Index is out of range.", "", false);
 				}
 			}
 			Err(_) => {
-				let _ = discord.send_message(&message.channel_id, "Index is not a valid number.", "", false);
+				let _ = discord.send_message(message.channel_id, "Index is not a valid number.", "", false);
 			}
 		}
 	}
@@ -239,10 +246,10 @@ impl Connect4 {
 		sgrid.push_str("\n```");
 		
 		if let Some(ref msg) = self.msg {
-			let _ = discord.delete_message(&msg.channel_id, &msg.id);
+			let _ = discord.delete_message(msg.channel_id, msg.id);
 		}
 		
-		if let Ok(msg) = discord.send_message(&message.channel_id, &sgrid, "", false) {
+		if let Ok(msg) = discord.send_message(message.channel_id, &sgrid, "", false) {
 			self.msg = Option::Some(msg);
 		}
 	}
@@ -251,7 +258,7 @@ impl Connect4 {
 		if Connect4::place(&mut self.grid, '#', position) {
 			true
 		} else {
-			let _ = discord.send_message(&message.channel_id, "Invalid position ya dweeb. The column is full.", "", false);
+			let _ = discord.send_message(message.channel_id, "Invalid position ya dweeb. The column is full.", "", false);
 			false
 		}
 	}
