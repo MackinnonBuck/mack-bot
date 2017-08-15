@@ -1,6 +1,8 @@
 extern crate discord;
+extern crate regex;
 
 mod bot_module;
+mod command;
 
 use std::io;
 use std::io::prelude::*;
